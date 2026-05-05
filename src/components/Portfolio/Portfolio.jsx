@@ -1,63 +1,29 @@
 import { useState } from "react";
 
-function Portfolio() {
+function Portfolio({ projects = [], categories = [] }) {
   const [activeCategory, setActiveCategory] = useState('all');
 
-  const categories = [
+  const categoryOptions = [
     { id: 'all', name: 'همه پروژه‌ها' },
-    { id: 'residential', name: 'مسکونی' },
-    { id: 'commercial', name: 'تجاری' },
-    { id: 'interior', name: 'طراحی داخلی' }
+    ...categories,
   ];
 
-  const projects = [
-    {
-      id: 1,
-      title: 'ویلای مدرن شمال',
-      category: 'residential',
-      image: 'https://dezharco.com/wp-content/uploads/2021/05/portada_Untitled_Panorama54.jpg',
-      description: 'طراحی و اجرای ویلای مدرن با نمای شیشه‌ای'
-    },
-    {
-      id: 2,
-      title: 'مجتمع تجاری مرکزی',
-      category: 'commercial',
-      image: 'https://archline.ir/file/2020/05/iranian-commercial-building-design-idea-7238265-26.jpg',
-      description: 'ساخت مجتمع تجاری ۵ طبقه'
-    },
-    {
-      id: 3,
-      title: 'آپارتمان لوکس',
-      category: 'residential',
-      image: 'https://archline.ir/file/2020/06/iranian-villa-design-idea-8255-2.jpg',
-      description: 'طراحی داخلی آپارتمان ۲۰۰ متری'
-    },
-    {
-      id: 4,
-      title: 'دفتر کار مدرن',
-      category: 'interior',
-      image: 'https://archline.ir/file/2020/05/iranian-building-design-idea-739372-5.jpg',
-      description: 'طراحی داخلی دفتر کار شرکتی'
-    },
-    {
-      id: 5,
-      title: 'هتل تجاری مسکونی',
-      category: 'commercial',
-      image: 'https://archline.ir/file/2020/05/iranian-office-building-design-idea-782096-1.jpg',
-      description: 'بازسازی و طراحی هتل'
-    },
-    {
-      id: 6,
-      title: 'پنت‌هاوس دوبلکس',
-      category: 'residential',
-      image: 'https://archline.ir/file/2020/04/iranian-building-design-idea-623926-5.jpg',
-      description: 'طراحی و اجرای پنت‌هاوس لوکس'
-    }
-  ];
+  const normalizeCategoryId = (category) => {
+    if (category === null || category === undefined) return category;
+    return typeof category === 'object' ? category.id : category;
+  };
 
-  const filteredProjects = activeCategory === 'all' 
-    ? projects 
-    : projects.filter(project => project.category === activeCategory);
+  const filteredProjects = activeCategory === 'all'
+    ? projects
+    : projects.filter((project) => {
+      const projectCategory = normalizeCategoryId(project.category);
+      return String(projectCategory) === String(activeCategory);
+    });
+
+  const getCategoryName = (project) => {
+    const projectCategory = normalizeCategoryId(project.category);
+    return categoryOptions.find((cat) => String(cat.id) === String(projectCategory))?.name || 'بدون دسته';
+  };
 
   return (
     <section className="py-20 bg-background-900" id="portfolio">
@@ -75,7 +41,7 @@ function Portfolio() {
 
         {/* Category Filter */}
         <div className="flex flex-wrap justify-center gap-4 mb-12">
-          {categories.map((category) => (
+          {categoryOptions.map((category) => (
             <button
               key={category.id}
               onClick={() => setActiveCategory(category.id)}
@@ -127,7 +93,7 @@ function Portfolio() {
               {/* Category Badge */}
               <div className="absolute top-4 right-4">
                 <span className="bg-primary-600/90 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-medium shadow-lg">
-                  {categories.find(cat => cat.id === project.category)?.name}
+                  {getCategoryName(project)}
                 </span>
               </div>
             </div>
