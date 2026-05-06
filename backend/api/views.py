@@ -11,8 +11,5 @@ class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
 
 class SiteSettingViewSet(viewsets.ReadOnlyModelViewSet):
-    """
-    ویو فقط خواندنی برای تنظیمات سایت (فوتر)
-    """
     queryset = SiteSetting.objects.all()
     serializer_class = SiteSettingSerializer
