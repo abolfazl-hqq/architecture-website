@@ -10,6 +10,7 @@ import About from './pages/aboutus/About.jsx';
 function App() {
   const [projects, setProjects] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [quickLinks, setQuickLinks] = useState([]);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -38,8 +39,20 @@ function App() {
       }
     };
 
+    const fetchQuickLinks = async () => {
+      try {
+        const result = await fetch('http://127.0.0.1:8000/api/quick-links/');
+        const data = await result.json();
+        console.log('Quick Links:', data);
+        setQuickLinks(data);
+      }catch(e) {
+        console.error('console error:', e);
+      }
+    }
+
     fetchProjects();
     fetchCategories();
+    fetchQuickLinks();
   }, []);
   
   return (
@@ -56,7 +69,7 @@ function App() {
           } />
           <Route path="/about" element={<About />} />
         </Routes>
-        <Footer />
+        <Footer quickLinks={quickLinks} />
       </div>
     </Router>
   );
