@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.text import slugify
 
+
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True, verbose_name="نام دسته‌بندی")
     slug = models.SlugField(max_length=100, blank=True, editable=False, verbose_name="نامک (خودکار)")
@@ -35,6 +36,49 @@ class Project(models.Model):
     class Meta:
         verbose_name = "پروژه"
         verbose_name_plural = "پروژه‌ها"
+
+    def __str__(self):
+        return self.title
+
+
+class SiteSetting(models.Model):
+    """تنظیمات سایت برای فوتر و اطلاعات تماس"""
+    address = models.CharField(max_length=500, blank=True, null=True, verbose_name="آدرس")
+    phone = models.CharField(max_length=50, blank=True, null=True, verbose_name="شماره تلفن")
+    mobile = models.CharField(max_length=50, blank=True, null=True, verbose_name="شماره موبایل")
+    email = models.EmailField(blank=True, null=True, verbose_name="ایمیل")
+
+    working_days = models.CharField(max_length=200, blank=True, null=True, verbose_name="روزهای کاری")
+    working_hours = models.CharField(max_length=100, blank=True, null=True, verbose_name="ساعت کاری")
+
+    instagram = models.URLField(blank=True, null=True, verbose_name="اینستاگرام")
+    linkedin = models.URLField(blank=True, null=True, verbose_name="لینکدین")
+    telegram = models.URLField(blank=True, null=True, verbose_name="تلگرام")
+
+    newsletter_text = models.CharField(max_length=300, blank=True, null=True, verbose_name="متن خبرنامه")
+
+    copyright_text = models.CharField(max_length=200, blank=True, null=True, verbose_name="متن کپی رایت")
+    designer_name = models.CharField(max_length=100, blank=True, null=True, verbose_name="نام طراح")
+    designer_link = models.URLField(blank=True, null=True, verbose_name="لینک طراح")
+
+    class Meta:
+        verbose_name = "تنظیمات سایت"
+        verbose_name_plural = "تنظیمات سایت"
+
+    def __str__(self):
+        return "تنظیمات اصلی سایت"
+
+
+class QuickLink(models.Model):
+    """لینک‌های سریع منوی فوتر"""
+    title = models.CharField(max_length=100, verbose_name="عنوان لینک")
+    url = models.CharField(max_length=500, verbose_name="آدرس لینک")
+    order = models.IntegerField(default=0, verbose_name="ترتیب نمایش")
+
+    class Meta:
+        verbose_name = "لینک سریع"
+        verbose_name_plural = "لینک‌های سریع"
+        ordering = ['order']
 
     def __str__(self):
         return self.title
