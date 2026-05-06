@@ -156,7 +156,7 @@ function Footer() {
                 <li className="flex items-start gap-3">
                   <span className="text-2xl">📍</span>
                   <div>
-                    <p className="text-slate-500 text-sm">مشهد، شهرک غرب</p>
+                    <p className="text-slate-600 text-md">مشهد، شهرک غرب</p>
                   </div>
                 </li>
                 <li className="flex items-center gap-3">
@@ -224,7 +224,7 @@ function Footer() {
           {/* Bottom Bar */}
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p className="text-slate-500 text-sm">
-              © ۱۴۰۲ تمامی حقوق محفوظ است | طراحی و توسعه توسط{" "}
+              © ۱۴۰۵ تمامی حقوق محفوظ است | طراحی و توسعه توسط{" "}
               <span className="text-primary-600 font-medium">نوسان</span>
             </p>
             <div className="flex gap-6 text-sm">
