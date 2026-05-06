@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Project, Category, SiteSetting, QuickLink
+from .models import Project, Category, SiteSetting
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -30,9 +30,3 @@ class SiteSettingAdmin(admin.ModelAdmin):
     )
     verbose_name = "تنظیمات سایت"
     verbose_name_plural = "تنظیمات سایت"
-
-@admin.register(QuickLink)
-class QuickLinkAdmin(admin.ModelAdmin):
-    list_display = ('title', 'url', 'order')
-    list_editable = ('order',)
-    search_fields = ('title',)

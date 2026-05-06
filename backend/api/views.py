@@ -1,6 +1,6 @@
 from rest_framework import viewsets
-from .models import Project, Category, SiteSetting, QuickLink
-from .serializers import ProjectSerializer, CategorySerializer, SiteSettingSerializer, QuickLinkSerializer
+from .models import Project, Category, SiteSetting
+from .serializers import ProjectSerializer, CategorySerializer, SiteSettingSerializer
 
 class ProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all().order_by('-created_at')
@@ -16,10 +16,3 @@ class SiteSettingViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = SiteSetting.objects.all()
     serializer_class = SiteSettingSerializer
-
-class QuickLinkViewSet(viewsets.ReadOnlyModelViewSet):
-    """
-    ویو فقط خواندنی برای لینک‌های سریع فوتر
-    """
-    queryset = QuickLink.objects.all().order_by('order')
-    serializer_class = QuickLinkSerializer

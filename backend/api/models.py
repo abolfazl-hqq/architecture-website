@@ -67,18 +67,3 @@ class SiteSetting(models.Model):
 
     def __str__(self):
         return "تنظیمات اصلی سایت"
-
-
-class QuickLink(models.Model):
-    """لینک‌های سریع منوی فوتر"""
-    title = models.CharField(max_length=100, verbose_name="عنوان لینک")
-    url = models.CharField(max_length=500, verbose_name="آدرس لینک")
-    order = models.IntegerField(default=0, verbose_name="ترتیب نمایش")
-
-    class Meta:
-        verbose_name = "لینک سریع"
-        verbose_name_plural = "لینک‌های سریع"
-        ordering = ['order']
-
-    def __str__(self):
-        return self.title
