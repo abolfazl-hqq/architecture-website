@@ -147,7 +147,7 @@ function Footer() {
             </div>
 
             {/* Contact Info */}
-            <div>
+            <div id='contact'>
               <h3 className="text-xl font-bold mb-6 relative inline-block text-slate-900">
                 اطلاعات تماس
                 <span className="absolute -bottom-2 right-0 w-12 h-1 bg-primary-600 rounded-full"></span>
