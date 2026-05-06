@@ -167,8 +167,8 @@ function Footer({ quickLinks }) {
                 <li className="flex items-center gap-3">
                   <span className="text-2xl">📞</span>
                   <div>
-                    <p className="text-slate-600">۰۲۱-۱۲۳۴۵۶۷۸</p>
-                    <p className="text-slate-500 text-sm">۰۹۱۲-۳۴۵۶۷۸۹</p>
+                    <p className="text-slate-600 font-medium">۰۲۱-۱۲۳۴۵۶۷۸</p>
+                    <p className="text-slate-500 text-sm font-medium">۰۹۱۲-۳۴۵۶۷۸۹</p>
                   </div>
                 </li>
                 <li className="flex items-center gap-3">
@@ -180,8 +180,8 @@ function Footer({ quickLinks }) {
                 <li className="flex items-center gap-3">
                   <span className="text-2xl">🕐</span>
                   <div>
-                    <p className="text-slate-600">شنبه تا پنجشنبه</p>
-                    <p className="text-slate-500 text-sm">۹:۰۰ صبح تا ۱۸:۰۰ عصر</p>
+                    <p className="text-slate-600 font-medium">شنبه تا پنجشنبه</p>
+                    <p className="text-slate-500 text-sm font-medium">۹:۰۰ صبح تا ۱۸:۰۰ عصر</p>
                   </div>
                 </li>
               </ul>
