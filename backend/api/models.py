@@ -60,25 +60,17 @@ class SiteSetting(models.Model):
     copyright_text = models.CharField(max_length=200, blank=True, null=True, verbose_name="متن کپی رایت")
     designer_name = models.CharField(max_length=100, blank=True, null=True, verbose_name="نام طراح")
     designer_link = models.URLField(blank=True, null=True, verbose_name="لینک طراح")
+    about_text = models.TextField(blank=True, null=True, verbose_name="متن درباره ما")
 
     class Meta:
-        verbose_name = "تنظیمات سایت"
-        verbose_name_plural = "تنظیمات سایت"
+        verbose_name = "اطلاعات تماس و فوتر"
+        verbose_name_plural = "اطلاعات تماس و فوتر"
 
     def __str__(self):
-        return "تنظیمات اصلی سایت"
+        return "اطلاعات تماس و فوتر"
 
-
-class QuickLink(models.Model):
-    """لینک‌های سریع منوی فوتر"""
-    title = models.CharField(max_length=100, verbose_name="عنوان لینک")
-    url = models.CharField(max_length=500, verbose_name="آدرس لینک")
-    order = models.IntegerField(default=0, verbose_name="ترتیب نمایش")
-
-    class Meta:
-        verbose_name = "لینک سریع"
-        verbose_name_plural = "لینک‌های سریع"
-        ordering = ['order']
-
-    def __str__(self):
-        return self.title
+    def save(self, *args, **kwargs):
+        """فقط اجازه ایجاد یک رکورد را می‌دهد"""
+        if not self.pk and SiteSetting.objects.exists():
+            raise Exception("تنها یک رکورد برای تنظیمات سایت می‌تواند وجود داشته باشد. لطفاً رکورد موجود را ویرایش کنید.")
+        super().save(*args, **kwargs)

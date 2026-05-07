@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Project, Category, SiteSetting, QuickLink
+from .models import Project, Category, SiteSetting
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -15,24 +15,25 @@ class ProjectAdmin(admin.ModelAdmin):
 @admin.register(SiteSetting)
 class SiteSettingAdmin(admin.ModelAdmin):
     fieldsets = (
-        ("اطلاعات تماس", {
+        ("اطلاعات تماس (شماره، آدرس، ایمیل)", {
             'fields': ('address', 'phone', 'mobile', 'email')
         }),
         ("ساعات کاری", {
             'fields': ('working_days', 'working_hours')
         }),
-        ("شبکه‌های اجتماعی", {
+        ("شبکه‌های اجتماعی (اینستاگرام، لینکدین، تلگرام)", {
             'fields': ('instagram', 'linkedin', 'telegram')
         }),
-        ("متن‌ها", {
+        ("متن‌های فوتر", {
             'fields': ('newsletter_text', 'copyright_text', 'designer_name', 'designer_link')
         }),
+        ("متن درباره ما", {
+            'fields': ('about_text',)
+        }),
     )
-    verbose_name = "تنظیمات سایت"
-    verbose_name_plural = "تنظیمات سایت"
+    verbose_name = "اطلاعات تماس و فوتر"
+    verbose_name_plural = "اطلاعات تماس و فوتر"
 
-@admin.register(QuickLink)
-class QuickLinkAdmin(admin.ModelAdmin):
-    list_display = ('title', 'url', 'order')
-    list_editable = ('order',)
-    search_fields = ('title',)
+    def has_add_permission(self, request):
+        """فقط اجازه اضافه کردن بده اگر هیچ رکوردی وجود نداشته باشد"""
+        return not SiteSetting.objects.exists()
