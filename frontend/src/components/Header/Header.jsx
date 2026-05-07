@@ -7,7 +7,7 @@ function Header() {
   const timeoutRef = useRef(null);
 
   const services = [
-    { name: 'فروش کاشی', href: '/#tiles' },
+    { name: 'هنری', href: '/#tiles' },
     { name: 'طراحی معماری', href: '/#design' },
     { name: 'ساخت ساختمان', href: '/#construction' }
   ];

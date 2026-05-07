@@ -5,7 +5,7 @@ function Services() {
   const services = [
     {
       id: 'tiles',
-      title: 'فروش کاشی',
+      title: 'هنری',
       subtitle: 'زیبایی در جزئیات',
       description: 'انواع کاشی‌های مدرن، کلاسیک و لوکس با بهترین کیفیت و قیمت رقابتی',
       color: serviceStyles.tiles.gradient,
