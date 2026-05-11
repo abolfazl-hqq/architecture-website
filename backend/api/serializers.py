@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Project, Category, SiteSetting, QuickLink
+from .models import Project, Category
 
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
@@ -10,13 +10,3 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['id', 'name', 'slug']
-
-class SiteSettingSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = SiteSetting
-        fields = '__all__'
-
-class QuickLinkSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = QuickLink
-        fields = ['id', 'title', 'url', 'order']
