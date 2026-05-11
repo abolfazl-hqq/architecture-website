@@ -10,7 +10,6 @@ import About from './pages/aboutus/About.jsx';
 function App() {
   const [projects, setProjects] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [siteSettings, setSiteSettings] = useState(null);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -39,22 +38,8 @@ function App() {
       }
     };
 
-    const fetchSiteSettings = async () => {
-      try {
-        const result = await fetch('http://127.0.0.1:8000/api/site-settings/');
-        if (!result.ok) {
-          throw new Error(`Network response was not ok: ${result.statusText}`);
-        }
-        const data = await result.json();
-        setSiteSettings(Array.isArray(data) ? data[0] ?? null : data);
-      }catch(e) {
-        console.error('console error:', e);
-      }
-    }
-
     fetchProjects();
     fetchCategories();
-    fetchSiteSettings();
   }, []);
   
   return (
@@ -71,7 +56,7 @@ function App() {
           } />
           <Route path="/about" element={<About />} />
         </Routes>
-        <Footer siteSettings={siteSettings} />
+        <Footer />
       </div>
     </Router>
   );
