@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Header from './components/Header/Header.jsx';
 import Hero from './components/Hero/Hero.jsx';
@@ -6,10 +6,14 @@ import Services from './components/Services/Services.jsx';
 import Portfolio from './components/Portfolio/Portfolio.jsx';
 import Footer from './components/Footer/Footer.jsx';
 import About from './pages/aboutus/About.jsx';
+import Auth from './pages/auth/Auth.jsx';
 
-function App() {
+function AppContent() {
   const [projects, setProjects] = useState([]);
   const [categories, setCategories] = useState([]);
+  const location = useLocation();
+
+  const isAuthPage = location.pathname === '/auth';
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -43,21 +47,28 @@ function App() {
   }, []);
   
   return (
+    <div className="font-sans" dir="rtl">
+      <Routes>
+        <Route path="/" element={
+          <main>
+            <Header/>
+            <Hero />
+            <Services />
+            <Portfolio projects={projects} categories={categories} />
+          </main>
+        } />
+        <Route path="/about" element={<About />} />
+        <Route path="/auth" element={<Auth />} />
+      </Routes>
+      {!isAuthPage && <Footer />}
+    </div>
+  );
+}
+
+function App() {
+  return (
     <Router>
-      <div className="font-sans" dir="rtl">
-        <Header />
-        <Routes>
-          <Route path="/" element={
-            <main>
-              <Hero />
-              <Services />
-              <Portfolio projects={projects} categories={categories} />
-            </main>
-          } />
-          <Route path="/about" element={<About />} />
-        </Routes>
-        <Footer />
-      </div>
+      <AppContent />
     </Router>
   );
 }

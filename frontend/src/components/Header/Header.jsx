@@ -1,7 +1,11 @@
 // src/components/Header.jsx
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useContext } from 'react';
+import { AuthContext } from '../../context/AuthContext';
 import logo from '../../assets/Logo.jpg'
+import UserMenu from './UserMenu';
+
 function Header() {
+  const { token } = useContext(AuthContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const timeoutRef = useRef(null);
@@ -129,10 +133,20 @@ function Header() {
             <a 
               href="/#contact" 
               onClick={(e) => scrollToSection(e, '/#contact')}
-              className="bg-primary-600 hover:bg-primary-700 text-white px-6 py-2.5 rounded-full transition-all duration-300 transform hover:scale-105 text-button shadow-lg shadow-primary-600/20"
+              className="text-muted-300 hover:text-primary-500 transition-colors duration-300 px-3 py-2 text-button"
             >
               تماس با ما
             </a>
+            {token ? (
+              <UserMenu />
+            ) : (
+              <a 
+                href="/auth" 
+                className="bg-primary-600 hover:bg-primary-700 text-white px-6 py-2.5 rounded-full transition-all duration-300 transform hover:scale-105 text-button shadow-lg shadow-primary-600/20"
+              >
+                ورود / ثبت نام
+              </a>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -207,10 +221,22 @@ function Header() {
             <a 
               href="/#contact" 
               onClick={(e) => scrollToSection(e, '/#contact')}
-              className="block px-3 py-3 bg-primary-600 text-white rounded-lg text-center mt-2 hover:bg-primary-700 transition-all duration-200 text-body-md"
+              className="block px-3 py-3 text-muted-300 hover:text-primary-500 hover:bg-surface-700 rounded-lg transition-all duration-200 text-body-md"
             >
               تماس با ما
             </a>
+            {token ? (
+              <div className="px-3 py-3 border-t border-surface-700 mt-3 pt-3">
+                <UserMenu />
+              </div>
+            ) : (
+              <a 
+                href="/auth" 
+                className="block px-3 py-3 bg-primary-600 text-white rounded-lg text-center mt-2 hover:bg-primary-700 transition-all duration-200 text-body-md"
+              >
+                ورود / ثبت نام
+              </a>
+            )}
           </div>
         </div>
       </nav>
