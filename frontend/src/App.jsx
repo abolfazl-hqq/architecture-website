@@ -7,6 +7,7 @@ import Portfolio from './components/Portfolio/Portfolio.jsx';
 import Footer from './components/Footer/Footer.jsx';
 import About from './pages/aboutus/About.jsx';
 import Auth from './pages/auth/Auth.jsx';
+import ErrorPage from './pages/error/ErrorPage.jsx';
 
 function AppContent() {
   const [projects, setProjects] = useState([]);
@@ -14,6 +15,7 @@ function AppContent() {
   const location = useLocation();
 
   const isAuthPage = location.pathname === '/auth';
+  const shouldShowFooter = !isAuthPage && ['/', '/about'].includes(location.pathname);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -56,11 +58,13 @@ function AppContent() {
             <Services />
             <Portfolio projects={projects} categories={categories} />
           </main>
-        } />
+        }
+        />
         <Route path="/about" element={<About />} />
         <Route path="/auth" element={<Auth />} />
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
-      {!isAuthPage && <Footer />}
+      {shouldShowFooter && <Footer />}
     </div>
   );
 }
