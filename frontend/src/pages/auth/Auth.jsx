@@ -2,6 +2,8 @@ import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import { authService } from '../../services/authService';
+import { ArrowRight } from 'lucide-react';
+
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -49,10 +51,10 @@ const Auth = () => {
   };
 
   return (
-    <div dir="rtl" className="min-h-screen bg-surface-50 py-6 flex flex-col justify-center sm:py-12">
-      <div className="relative py-3 sm:mt-24 sm:max-w-xl mx-4 sm:mx-auto">
+    <div dir="rtl" className="min-h-screen bg-surface-50 py-6 px-6 flex flex-col justify-center sm:py-12">
+      <div className="m-auto relative w-full max-w-md">
         <div
-          className="absolute inset-0 bg-gradient-to-r from-background-900 via-background-800 to-background-900 transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl">
+          className="hidden sm:block absolute inset-0 bg-gradient-to-r from-background-900 via-background-800 to-background-900 transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl">
         </div>
         <div className="relative px-4 py-10 bg-white shadow-lg rounded-3xl sm:p-20">
           <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-10">
@@ -61,6 +63,7 @@ const Auth = () => {
               onClick={() => navigate('/')}
               className="inline-flex items-center gap-2 rounded-full border border-surface-200 bg-surface-100 px-4 py-2 text-sm font-medium text-background-800 shadow-sm transition hover:bg-surface-200"
             >
+              <ArrowRight className="w-4 h-4" />
               بازگشت به خانه
             </button>
           </div>

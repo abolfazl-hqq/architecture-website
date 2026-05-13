@@ -16,7 +16,7 @@ function Hero() {
         <div className="space-y-8 max-w-3xl mx-auto">
           
           {/* Badge */}
-          <div className="inline-block">
+          <div className="inline-block mt-6">
             <span className="bg-primary-600/30 text-primary-300 px-6 py-2.5 rounded-full text-sm lg:text-base font-semibold backdrop-blur-sm border border-primary-500/50 tracking-wide">
               ✨ طراحی معمارانه | خدمات دکوریشن
             </span>
