@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { AuthProvider } from './context/AuthContext';
 import Header from './components/Header/Header.jsx';
 import Hero from './components/Hero/Hero.jsx';
 import Services from './components/Services/Services.jsx';
@@ -47,7 +48,7 @@ function AppContent() {
     fetchProjects();
     fetchCategories();
   }, []);
-  
+
   return (
     <div className="font-sans" dir="rtl">
       <Routes>
@@ -72,7 +73,9 @@ function AppContent() {
 function App() {
   return (
     <Router>
-      <AppContent />
+      <AuthProvider>   {/* <-- این خط اضافه شد */}
+        <AppContent />
+      </AuthProvider>
     </Router>
   );
 }

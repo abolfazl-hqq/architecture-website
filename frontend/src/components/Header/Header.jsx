@@ -2,13 +2,17 @@
 import { useState, useRef, useEffect, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import logo from '../../assets/Logo.jpg'
-import UserMenu from './UserMenu';
 
 function Header() {
-  const { token } = useContext(AuthContext);
+  const { token, user, logout } = useContext(AuthContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const timeoutRef = useRef(null);
+
+  // دیباگ برای بررسی تغییرات user
+  useEffect(() => {
+    console.log('Header - user changed:', user);
+  }, [user]);
 
   const services = [
     { name: 'هنری', href: '/#tiles' },
@@ -37,7 +41,6 @@ function Header() {
     }, 200);
   };
 
-  // تابع اسکرول نرم
   const scrollToSection = (e, href) => {
     e.preventDefault();
     const targetId = href.replace('/#', '');
@@ -49,14 +52,19 @@ function Header() {
     }
   };
 
+  const handleLogout = () => {
+    logout();
+    window.location.href = '/';
+  };
+
   return (
     <header className="fixed w-full z-50 bg-gradient-to-r from-background-900 via-background-800 to-background-900 shadow-2xl">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           <div className="flex items-center gap-3">
-            <div className="w-14 h-14">  
+            <div className="w-14 h-14">
               <img src={logo} alt="logo" className="w-full h-full object-cover rounded-full"/>
-            </div>  
+            </div>
             <div className="text-3xl font-black tracking-tight">
               <span className="text-primary-500">نو</span>
               <span className="text-white">سان</span>
@@ -68,30 +76,30 @@ function Header() {
             <a href="/" className="text-muted-300 hover:text-primary-500 transition-colors duration-300 px-3 py-2 text-button">
               خانه
             </a>
-            
+
             {/* Services Dropdown */}
-            <div 
+            <div
               className="relative py-2"
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
             >
-              <button 
+              <button
                 className="flex items-center text-muted-300 hover:text-primary-500 transition-colors duration-300 px-3 py-2 text-button"
                 onClick={() => setIsServicesOpen(!isServicesOpen)}
               >
                 خدمات ما
-                <svg 
-                  className={`mr-1.5 w-4 h-4 transition-transform duration-300 ${isServicesOpen ? 'rotate-180' : ''}`} 
-                  fill="none" 
-                  stroke="currentColor" 
+                <svg
+                  className={`mr-1.5 w-4 h-4 transition-transform duration-300 ${isServicesOpen ? 'rotate-180' : ''}`}
+                  fill="none"
+                  stroke="currentColor"
                   viewBox="0 0 24 24"
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
-              
+
               {/* Dropdown Menu */}
-              <div 
+              <div
                 className={`absolute top-full right-0 mt-1 w-56 bg-white rounded-xl shadow-2xl overflow-hidden transition-all duration-300 transform ${
                   isServicesOpen 
                     ? 'opacity-100 scale-100 translate-y-0 visible' 
@@ -120,8 +128,8 @@ function Header() {
               </div>
             </div>
 
-            <a 
-              href="/#portfolio" 
+            <a
+              href="/#portfolio"
               onClick={(e) => scrollToSection(e, '/#portfolio')}
               className="text-muted-300 hover:text-primary-500 transition-colors duration-300 px-3 py-2 text-button"
             >
@@ -130,18 +138,26 @@ function Header() {
             <a href="/about" className="text-muted-300 hover:text-primary-500 transition-colors duration-300 px-3 py-2 text-button">
               درباره ما
             </a>
-            <a 
-              href="/#contact" 
+            <a
+              href="/#contact"
               onClick={(e) => scrollToSection(e, '/#contact')}
               className="text-muted-300 hover:text-primary-500 transition-colors duration-300 px-3 py-2 text-button"
             >
               تماس با ما
             </a>
-            {token ? (
-              <UserMenu />
+            {token && user ? (
+              <div className="flex items-center gap-3">
+                <span className="text-white text-sm">{user.username}</span>
+                <button
+                  onClick={handleLogout}
+                  className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full text-sm transition"
+                >
+                  خروج
+                </button>
+              </div>
             ) : (
-              <a 
-                href="/auth" 
+              <a
+                href="/auth"
                 className="bg-primary-600 hover:bg-primary-700 text-white px-6 py-2.5 rounded-full transition-all duration-300 transform hover:scale-105 text-button shadow-lg shadow-primary-600/20"
               >
                 ورود / ثبت نام
@@ -165,36 +181,36 @@ function Header() {
           isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
         }`}>
           <div className="px-2 pt-2 pb-3 space-y-1 bg-surface-800 rounded-xl mt-2 shadow-xl">
-            <a 
-              href="/" 
+            <a
+              href="/"
               className="block px-3 py-3 text-muted-300 hover:text-primary-500 hover:bg-surface-700 rounded-lg transition-all duration-200 text-body-md"
             >
               خانه
             </a>
-            
+
             {/* Mobile Services */}
             <div>
-              <button 
+              <button
                 onClick={() => setIsServicesOpen(!isServicesOpen)}
                 className="w-full text-right px-3 py-3 text-muted-300 font-medium hover:bg-surface-700 rounded-lg flex items-center justify-between text-body-md"
               >
                 خدمات ما
-                <svg 
-                  className={`w-4 h-4 transition-transform duration-300 ${isServicesOpen ? 'rotate-180' : ''}`} 
-                  fill="none" 
-                  stroke="currentColor" 
+                <svg
+                  className={`w-4 h-4 transition-transform duration-300 ${isServicesOpen ? 'rotate-180' : ''}`}
+                  fill="none"
+                  stroke="currentColor"
                   viewBox="0 0 24 24"
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
-              
+
               <div className={`overflow-hidden transition-all duration-300 ${
                 isServicesOpen ? 'max-h-48 opacity-100' : 'max-h-0 opacity-0'
               }`}>
                 {services.map((service, index) => (
-                  <a 
-                    key={index} 
+                  <a
+                    key={index}
                     href={service.href}
                     onClick={(e) => scrollToSection(e, service.href)}
                     className="block pr-8 px-3 py-2.5 text-muted-400 hover:text-primary-500 hover:bg-surface-700 rounded-lg transition-all duration-200 text-body-sm"
@@ -204,30 +220,38 @@ function Header() {
                 ))}
               </div>
             </div>
-            
-            <a 
-              href="/about" 
+
+            <a
+              href="/about"
               className="block px-3 py-3 text-muted-300 hover:text-primary-500 hover:bg-surface-700 rounded-lg transition-all duration-200 text-body-md"
             >
               درباره ما
             </a>
-            <a 
-              href="/#portfolio" 
+            <a
+              href="/#portfolio"
               onClick={(e) => scrollToSection(e, '/#portfolio')}
               className="block px-3 py-3 text-muted-300 hover:text-primary-500 hover:bg-surface-700 rounded-lg transition-all duration-200 text-body-md"
             >
               نمونه کارها
             </a>
-            <a 
-              href="/#contact" 
+            <a
+              href="/#contact"
               onClick={(e) => scrollToSection(e, '/#contact')}
               className="block px-3 py-3 text-muted-300 hover:text-primary-500 hover:bg-surface-700 rounded-lg transition-all duration-200 text-body-md"
             >
               تماس با ما
             </a>
-            {token ? (
+            {token && user ? (
               <div className="px-3 py-3 border-t border-surface-700 mt-3 pt-3">
-                <UserMenu />
+                <div className="flex items-center justify-between">
+                  <span className="text-white text-sm">{user.username}</span>
+                  <button
+                    onClick={handleLogout}
+                    className="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg text-sm transition"
+                  >
+                    خروج
+                  </button>
+                </div>
               </div>
             ) : (
               <a 
