@@ -7,12 +7,8 @@ function Header() {
   const { token, user, logout } = useContext(AuthContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const timeoutRef = useRef(null);
-
-  // دیباگ برای بررسی تغییرات user
-  useEffect(() => {
-    console.log('Header - user changed:', user);
-  }, [user]);
 
   const services = [
     { name: 'هنری', href: '/#tiles' },
@@ -39,6 +35,22 @@ function Header() {
     timeoutRef.current = setTimeout(() => {
       setIsServicesOpen(false);
     }, 200);
+  };
+
+  const closeAllMenus = () => {
+    setIsMenuOpen(false);
+    setIsServicesOpen(false);
+    setIsUserMenuOpen(false);
+  };
+
+  const handleAccountClick = (e) => {
+    e.preventDefault();
+    closeAllMenus();
+  };
+
+  const handleSettingsClick = (e) => {
+    e.preventDefault();
+    closeAllMenus();
   };
 
   const scrollToSection = (e, href) => {
@@ -146,14 +158,56 @@ function Header() {
               تماس با ما
             </a>
             {token && user ? (
-              <div className="flex items-center gap-3">
-                <span className="text-white text-sm">{user.username}</span>
+              <div className="relative py-2">
                 <button
-                  onClick={handleLogout}
-                  className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full text-sm transition"
+                  onClick={() => {
+                    setIsUserMenuOpen((prev) => !prev);
+                    setIsServicesOpen(false);
+                  }}
+                  className="flex items-center gap-2 text-muted-300 hover:text-primary-500 transition-colors duration-300 px-3 py-2 text-button"
+                  type="button"
                 >
-                  خروج
+                  {user.username}
+                  <svg
+                    className={`mr-1.5 w-4 h-4 transition-transform duration-300 ${isUserMenuOpen ? 'rotate-180' : ''}`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                  </svg>
                 </button>
+                <div
+                  className={`absolute top-full right-0 mt-1 w-56 bg-white rounded-xl shadow-2xl overflow-hidden transition-all duration-300 transform ${
+                    isUserMenuOpen
+                      ? 'opacity-100 scale-100 translate-y-0 visible'
+                      : 'opacity-0 scale-95 -translate-y-2 invisible'
+                  }`}
+                >
+                  <div className="py-2">
+                    <button
+                      type="button"
+                      onClick={handleAccountClick}
+                      className="w-full text-right px-4 py-3 text-muted-700 hover:bg-primary-50 hover:text-primary-600 transition-all duration-200 hover:pr-6 border-r-2 border-transparent hover:border-primary-500 text-body-sm font-medium"
+                    >
+                      حساب کاربری
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleSettingsClick}
+                      className="w-full text-right px-4 py-3 text-muted-700 hover:bg-primary-50 hover:text-primary-600 transition-all duration-200 hover:pr-6 border-r-2 border-transparent hover:border-primary-500 text-body-sm font-medium"
+                    >
+                      تنظیمات
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleLogout}
+                      className="w-full text-right px-4 py-3 text-red-600 hover:bg-red-50 transition-all duration-200 text-body-sm font-medium"
+                    >
+                      خروج از حساب
+                    </button>
+                  </div>
+                </div>
               </div>
             ) : (
               <a
@@ -178,7 +232,11 @@ function Header() {
 
         {/* Mobile Menu */}
         <div className={`lg:hidden transition-all duration-300 overflow-hidden ${
-          isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+          isMenuOpen 
+            ? (isServicesOpen || isUserMenuOpen) 
+              ? 'max-h-screen opacity-100' 
+              : 'max-h-96 opacity-100' 
+            : 'max-h-0 opacity-0'
         }`}>
           <div className="px-2 pt-2 pb-3 space-y-1 bg-surface-800 rounded-xl mt-2 shadow-xl">
             <a
@@ -243,13 +301,44 @@ function Header() {
             </a>
             {token && user ? (
               <div className="px-3 py-3 border-t border-surface-700 mt-3 pt-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-white text-sm">{user.username}</span>
-                  <button
-                    onClick={handleLogout}
-                    className="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg text-sm transition"
+                <button
+                  onClick={() => setIsUserMenuOpen((prev) => !prev)}
+                  className="w-full flex items-center justify-between px-3 py-3 text-muted-300 font-medium hover:bg-surface-700 rounded-lg transition-all duration-200 text-body-md"
+                  type="button"
+                >
+                  <span>{user.username}</span>
+                  <svg
+                    className={`w-4 h-4 transition-transform duration-300 ${isUserMenuOpen ? 'rotate-180' : ''}`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
                   >
-                    خروج
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <div className={`overflow-hidden transition-all duration-300 ${
+                  isUserMenuOpen ? 'max-h-72 opacity-100' : 'max-h-0 opacity-0'
+                }`}>
+                  <button
+                    type="button"
+                    onClick={handleAccountClick}
+                    className="w-full text-right px-3 py-3 text-muted-400 hover:text-primary-500 hover:bg-surface-700 rounded-lg transition-all duration-200 text-body-sm"
+                  >
+                    حساب کاربری
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleSettingsClick}
+                    className="w-full text-right px-3 py-3 text-muted-400 hover:text-primary-500 hover:bg-surface-700 rounded-lg transition-all duration-200 text-body-sm"
+                  >
+                    تنظیمات
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="w-full text-right px-3 py-3 text-red-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200 text-body-sm"
+                  >
+                    خروج از حساب
                   </button>
                 </div>
               </div>
