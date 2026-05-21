@@ -4,6 +4,9 @@ from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth.models import User
+from rest_framework_simplejwt.views import TokenObtainPairView
+from django_ratelimit.decorators import ratelimit
+from django.utils.decorators import method_decorator
 from .models import Project, Category
 from .serializers import ProjectSerializer, CategorySerializer, RegisterSerializer, UserSerializer
 
@@ -12,6 +15,10 @@ class RegisterView(CreateAPIView):
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
     permission_classes = [AllowAny]
+
+    @method_decorator(ratelimit(key='ip', rate='5/m', method='POST'))
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -25,6 +32,13 @@ class RegisterView(CreateAPIView):
             },
             status=status.HTTP_201_CREATED
         )
+
+
+class LimitedTokenObtainPairView(TokenObtainPairView):
+    """لاگین با محدودیت نرخ درخواست (5 بار در دقیقه)"""
+    @method_decorator(ratelimit(key='ip', rate='5/m', method='POST'))
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
 
 
 class ProfileView(APIView):
@@ -64,6 +78,7 @@ class ProfileView(APIView):
 class ProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all().order_by('-created_at')
     serializer_class = ProjectSerializer
+
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()

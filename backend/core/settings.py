@@ -7,7 +7,12 @@ SECRET_KEY = 'django-insecure-^sr7-01w-p(suugd(^q$o^2otc+t_g*3dw08+=_^!+8bxd0dr$
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    # 'yourdomain.com',
+    # 'www.yourdomain.com',
+    '127.0.0.1',
+    'localhost',
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -82,13 +87,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
+    # "https://yourdomain.com", # آدرس واقعی
+    # "https://www.yourdomain.com",   # آدرس واقعی با www
 ]
 
+CORS_ALLOW_CREDENTIALS = True
 
 from datetime import timedelta
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
