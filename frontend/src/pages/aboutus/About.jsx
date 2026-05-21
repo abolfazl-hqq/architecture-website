@@ -1,6 +1,7 @@
 ﻿import Hero from "./components/Hero";
 import MissionVision from "./components/MissionVision";
 import { valueAccents } from "../../constants/colors";
+import Header from "../../components/Header/Header";
 /* eslint-disable react-refresh/only-export-components */
 export const metadata = {
   title: 'درباره ما | نوسان',
@@ -14,7 +15,8 @@ export const metadata = {
 
 export default function AboutPage() {
   return (
-    <main className="min-h-screen pt-20">
+    <main className="min-h-screen">
+      <Header/>
       <Hero />
 
       <MissionVision />
